@@ -2,17 +2,21 @@ import { Module } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { PostsResolver } from './posts.resolver';
 import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloFederationDriver, ApolloFederationDriverConfig } from '@nestjs/apollo';
+import {
+  ApolloFederationDriver,
+  ApolloFederationDriverConfig,
+} from '@nestjs/apollo';
+import { FollowerResolver } from './follwer.resoler';
 
 @Module({
-  imports:[
+  imports: [
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       autoSchemaFile: {
-        federation: 2
-      }
-    })
+        federation: 2,
+      },
+    }),
   ],
-  providers: [PostsResolver, PostsService],
+  providers: [PostsResolver, PostsService, FollowerResolver],
 })
 export class PostsModule {}

@@ -1,0 +1,11 @@
+import { UnauthorizedException } from '@nestjs/common';
+
+export const authContext = ({ req }) => {
+  if (req.headers?.authorization) {
+    //JWT VALIDATION
+    return {
+      follower: { id: '123' },
+    };
+    throw new UnauthorizedException();
+  }
+};

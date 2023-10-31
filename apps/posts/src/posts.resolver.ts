@@ -1,7 +1,17 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { PostsService } from './posts.service';
 import { Post } from './entities/post.entity';
 import { CreatePostInput } from './dto/create-post.input';
+import { Follwer } from './entities/follower.entity';
+import { CurrentFollowerDecorator } from './current-follower.decorator';
 
 @Resolver(() => Post)
 export class PostsResolver {
@@ -13,7 +23,8 @@ export class PostsResolver {
   }
 
   @Query(() => [Post], { name: 'posts' })
-  findAll() {
+  findAll(@CurrentFollowerDecorator() follower: Follwer) {
+    console.log(follower);
     return this.postsService.findAll();
   }
 
@@ -22,4 +33,8 @@ export class PostsResolver {
     return this.postsService.findOne(id);
   }
 
+  @ResolveField(() => Follwer)
+  follwer(@Parent() post: Post): any {
+    return { __typename: 'Follower', id: post.authorId };
+  }
 }

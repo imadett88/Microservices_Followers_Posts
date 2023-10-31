@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, ResolveReference } from "@nestjs/graphql";
 import { FollowersService } from './followers.service';
 import { Follower } from './entities/follower.entity';
 import { CreateFollowerInput } from './dto/create-follower.input';
@@ -20,6 +20,11 @@ export class FollowersResolver {
   @Query(() => Follower, { name: 'follower' })
   findOne(@Args('id') id: string) {
     return this.followersService.findOne(id);
+  }
+
+  @ResolveReference()
+  resolveReference(reference: { __typename: string; id: string }): Follower {
+    return this.followersService.findOne(reference.id);
   }
 
 }

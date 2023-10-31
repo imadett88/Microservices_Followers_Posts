@@ -1,4 +1,5 @@
 import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
+import { Follwer } from './follower.entity';
 
 @ObjectType()
 export class Post {
@@ -10,4 +11,7 @@ export class Post {
 
   @Field()
   authorId: string;
+
+  @Field(() => Follwer)
+  follower?: Follwer;
 }
